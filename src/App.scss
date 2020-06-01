@@ -1,0 +1,44 @@
+@import '~bootstrap/scss/bootstrap';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.fileNameInput {
+  font-size: 20px;
+
+  input {
+    font-size: 20px;
+  }
+}
+
+.media-item {
+  width: 100%;
+  padding-bottom: 75%;
+}
+
+.icon-border {
+  display: flex;
+  padding: 4px;
+}
+
+.icon {
+  &-video {
+    border-color: rgb(52, 220, 185) !important;
+  }
+
+  &-text {
+    border-color: rgb(250, 146, 183) !important;
+  }
+
+  &-text {
+    border-color: rgb(255, 174, 156) !important;
+  }
+}

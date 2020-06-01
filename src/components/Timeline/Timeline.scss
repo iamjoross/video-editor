@@ -1,0 +1,119 @@
+.timeline {
+  height: 100%;
+
+  &__container {
+    height: 100%;
+    background-color: rgb(242, 245, 248);
+    border: 1px solid #dee2e6 !important;
+
+    &-header {
+      display: flex;
+      box-sizing: border-box;
+      height: 18%;
+      > div {
+        display: flex;
+
+        align-items: center;
+
+        &:first-child {
+          width: 15%;
+          justify-content: center;
+          background-color: #fff;
+        }
+
+        &:last-child {
+          box-sizing: border-box;
+          border-top: 1px solid #dee2e6 !important;
+          width: 85%;
+        }
+      }
+
+      &__ruler {
+        // box-sizing: border-box;
+        border-left: 1px solid #dee2e6 !important;
+        width: 100%;
+        canvas {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    &__layers {
+      &-container {
+        border-top: 1px solid #dee2e6 !important;
+        height: 82%;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        > div {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  &-layer {
+    border-bottom: 1px solid #dee2e6 !important;
+    > div {
+      &:first-child {
+        background-color: #fff;
+        width: 15%;
+      }
+      &:last-child {
+        border-left: 1px solid #dee2e6 !important;
+        width: 85%;
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    &-video {
+      height: 50px;
+      min-height: 50px;
+    }
+
+    &-text,
+    &-audio {
+      height: 35px;
+      min-height: 35px;
+    }
+
+    &__heading {
+      padding: 8px;
+      display: flex;
+      align-items: center;
+
+      &-icon {
+        display: flex;
+        width: 15%;
+      }
+      &-name {
+        display: flex;
+        width: 60%;
+
+        .fileNameInput {
+          font-size: 12px;
+
+          input {
+            font-size: 12px;
+            width: 100%;
+          }
+        }
+
+        .editable-input {
+          padding: 0 !important;
+          display: flex;
+          align-items: center;
+        }
+      }
+      &-options {
+        width: 25%;
+        display: flex;
+        justify-content: space-evenly;
+      }
+    }
+  }
+}

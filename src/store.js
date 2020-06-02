@@ -1,8 +1,9 @@
 import React, { createContext, useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import update from 'immutability-helper';
 import {
   UPDATE_CURRENT_DROPPED_ITEM,
-  UPDATE_CURRENT_HOVERING_COORD,
+  UPDATE_CURRENT_HOVERING_ITEM,
 } from './constants';
 import 'holderjs';
 
@@ -102,9 +103,11 @@ const StateProvider = ({ children }) => {
     switch (action.type) {
       case UPDATE_CURRENT_DROPPED_ITEM:
         state = { ...state, currentDroppedItem: action.payload };
+        update(state, { currentDroppedItem: { $set: null } });
         return state;
-      case UPDATE_CURRENT_HOVERING_COORD:
-        state = { ...state, currentHoveringItem: { coords: action.payload } };
+      case UPDATE_CURRENT_HOVERING_ITEM:
+        // update(state, { currentHoveringItem: { $set: {} } });
+        state = { ...state, currentHoveringItem: { ...action.payload } };
         return state;
       default:
         throw new Error();

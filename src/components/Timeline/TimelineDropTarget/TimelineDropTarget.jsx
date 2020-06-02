@@ -53,7 +53,7 @@ const TimelineDropTarget = ({
       if (monitor.canDrop()) {
         const coords = getOffsetCoords(monitor, targetRef);
         wait(120); // debounce
-        setHoveringItem({ type: item.type, coords });
+        setHoveringItem({ item, coords });
       }
     },
     [wait]
@@ -61,30 +61,13 @@ const TimelineDropTarget = ({
 
   const handleDrop = useCallback(
     (index, item, monitor, targetRef) => {
-      console.log('dropped');
       if (monitor.canDrop()) {
         const coords = getOffsetCoords(monitor, targetRef);
         dispatch({
           type: UPDATE_CURRENT_DROPPED_ITEM,
-          payload: coords,
+          payload: { item, coords },
         });
       }
-
-      //   setDroppedMedia(
-      //     update(
-      //       droppedMedia,
-      //       item.index ? { $push: [item.index] } : { $push: [] }
-      //     )
-      //   );
-      //   setTimelineLayers(
-      //     update(timelineLayers, {
-      //       [index]: {
-      //         lastDroppedItem: {
-      //           $set: item,
-      //         },
-      //       },
-      //     })
-      //   );
     },
     [dispatch]
   );
@@ -115,9 +98,13 @@ const TimelineDropTarget = ({
       style={{ backgroundColor }}
     >
       {frames && frames.length ? (
-        frames.map((frame, index) => <FrameBar key={index} frame={frame} />)
-      ) : !isEmpty(hoveringItem) && type === hoveringItem.type && isOver ? (
-        <FrameBar key={index} frame={hoveringItem} />
+        frames.map((frame, index) => (
+          <FrameBar key={index} frame={frame} overDraggable={false} />
+        ))
+      ) : !isEmpty(hoveringItem) &&
+        type === hoveringItem.item.type &&
+        isOver ? (
+        <FrameBar key={index} frame={hoveringItem} overDraggable={true} />
       ) : (
         ''
       )}

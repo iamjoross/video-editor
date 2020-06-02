@@ -86,12 +86,10 @@ const frames = {};
 // };
 
 const currentDroppedItem = null;
-const currentHoveringItem = null;
 const initState = {
   layers,
   media,
   frames,
-  currentHoveringItem,
   currentDroppedItem,
 };
 
@@ -102,12 +100,20 @@ const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case UPDATE_CURRENT_DROPPED_ITEM:
-        state = { ...state, currentDroppedItem: action.payload };
-        update(state, { currentDroppedItem: { $set: null } });
-        return state;
-      case UPDATE_CURRENT_HOVERING_ITEM:
-        // update(state, { currentHoveringItem: { $set: {} } });
-        state = { ...state, currentHoveringItem: { ...action.payload } };
+        if (action.payload.item.type === 'video') {
+          return update(state, {
+            layers: { 0: { frames: { $push: [action.payload] } } },
+          });
+        } else if (action.payload.item.type === 'audio') {
+          return update(state, {
+            layers: { 1: { frames: { $push: [action.payload] } } },
+          });
+        } else {
+          return update(state, {
+            layers: { 2: { frames: { $push: [action.payload] } } },
+          });
+        }
+
         return state;
       default:
         throw new Error();

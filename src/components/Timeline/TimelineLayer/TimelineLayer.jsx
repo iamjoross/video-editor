@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap-icons';
 import TimelineDropTarget from '../TimelineDropTarget';
 
-const TimelineLayer = ({ layer, handleDrop, ...props }) => {
+const TimelineLayer = ({ layer, ...props }) => {
   const [index, { type, title, accept, frames }] = layer;
   const [layerName, setLayerName] = useState(title);
   const inputRef = useRef();
@@ -56,7 +56,7 @@ const TimelineLayer = ({ layer, handleDrop, ...props }) => {
         accept={accept}
         type={type}
         frames={frames}
-        handleDrop={handleDrop}
+        title={title}
       />
     </div>
   );

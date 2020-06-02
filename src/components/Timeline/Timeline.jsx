@@ -4,7 +4,7 @@ import TimelineLayer from './TimelineLayer';
 import { store } from '../../store';
 import './Timeline.scss';
 
-const Timeline = ({ layers, handleDrop, ...props }) => {
+const Timeline = ({ layers, ...props }) => {
   const { state } = useContext(store);
   return (
     <div className='timeline'>
@@ -17,13 +17,7 @@ const Timeline = ({ layers, handleDrop, ...props }) => {
         </div>
         <div className='timeline__container__layers-container'>
           {Object.entries(state.layers).map((layer, index) => {
-            return (
-              <TimelineLayer
-                key={index}
-                layer={layer}
-                handleDrop={handleDrop}
-              />
-            );
+            return <TimelineLayer key={index} layer={layer} />;
           })}
         </div>
       </div>

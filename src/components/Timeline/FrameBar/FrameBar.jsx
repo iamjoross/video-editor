@@ -10,7 +10,6 @@ const styles = {
 };
 const FrameBar = ({ frame, ...props }) => {
   const left = frame.left ? frame.left : frame.coords.x ? frame.coords.x : 0;
-  console.log(frame);
   return <div style={{ ...styles, left: `${left}px` }}>`${left}px`</div>;
 };
 

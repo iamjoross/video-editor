@@ -1,58 +1,117 @@
-import React, { useRef, useContext } from 'react';
+import React, {
+  useRef,
+  useContext,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react';
 import { useDrop } from 'react-dnd';
 import FrameBar from '../FrameBar';
 import { store } from '../../../store';
-import { UPDATE_CURRENT_HOVERING_COORD } from '../../../constants';
+import {
+  UPDATE_CURRENT_HOVERING_ITEM,
+  UPDATE_CURRENT_DROPPED_ITEM,
+} from '../../../constants';
+import { useWait, isEmpty } from '../../../util';
 
 const TimelineDropTarget = ({
   index,
   accept,
   type,
   frames,
-  handleDrop,
+  title,
   ...props
 }) => {
   const { state, dispatch } = useContext(store);
+  const [wait, done] = useWait();
+  const doneRef = useRef(done);
+  const collectedPropsRef = useRef();
   const ref = useRef();
+  const [hoveringItem, setHoveringItem] = useState({});
+  const [isBeingHovered, setIsBeingHovered] = useState(false);
 
-  const handleHover = (item, monitor) => {
-    const targetRef = dropTarget(ref);
-    if (monitor.canDrop()) {
-      const offset = monitor.getSourceClientOffset();
-      if (offset && targetRef.current) {
-        const dropTargetXy = ref.current.getBoundingClientRect();
-        const currentCoords = {
-          x: offset.x - dropTargetXy.left,
-          y: offset.y - dropTargetXy.top,
-        };
+  useEffect(() => {
+    doneRef.current = done;
+  });
 
-        dispatch({
-          type: UPDATE_CURRENT_HOVERING_COORD,
-          payload: currentCoords,
-        });
+  const getOffsetCoords = (monitor, targetRef) => {
+    const offset = monitor.getSourceClientOffset();
+    if (!(offset && targetRef.current)) return null;
 
-        console.log(state.currentHoveringItem);
-      }
-    }
+    const dropTargetXy = targetRef.current.getBoundingClientRect();
+    if (offset.x - dropTargetXy.left < 0) return;
+
+    const coords = {
+      x: offset.x - dropTargetXy.left,
+      y: offset.y - dropTargetXy.top,
+    };
+
+    return coords;
   };
 
-  const [{ isOver, hover, canDrop }, dropTarget] = useDrop({
+  const handleHover = useCallback(
+    (item, monitor, targetRef) => {
+      if (!doneRef.current) return collectedPropsRef.current;
+      if (monitor.canDrop()) {
+        const coords = getOffsetCoords(monitor, targetRef);
+        wait(120); // debounce
+        setHoveringItem({ type: item.type, coords });
+        setIsBeingHovered(true);
+        console.log(isBeingHovered);
+      } else {
+        setIsBeingHovered(false);
+        console.log(isBeingHovered);
+      }
+    },
+    [isBeingHovered, wait]
+  );
+
+  const handleDrop = useCallback(
+    (index, item, monitor, targetRef) => {
+      if (monitor.canDrop()) {
+        const coords = getOffsetCoords(monitor, targetRef);
+        dispatch({
+          type: UPDATE_CURRENT_DROPPED_ITEM,
+          payload: coords,
+        });
+      }
+
+      //   setDroppedMedia(
+      //     update(
+      //       droppedMedia,
+      //       item.index ? { $push: [item.index] } : { $push: [] }
+      //     )
+      //   );
+      //   setTimelineLayers(
+      //     update(timelineLayers, {
+      //       [index]: {
+      //         lastDroppedItem: {
+      //           $set: item,
+      //         },
+      //       },
+      //     })
+      //   );
+    },
+    [dispatch]
+  );
+
+  const [{ isOver, canDrop }, dropTarget] = useDrop({
     accept,
     drop: (item, monitor) => handleDrop(index, item, monitor, dropTarget(ref)),
-    hover: (item, monitor) => handleHover(item, monitor),
+    hover: (item, monitor, component) =>
+      handleHover(item, monitor, dropTarget(ref)),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
-      draggingColor: monitor.getItemType(),
     }),
   });
+
   const isActive = isOver && canDrop;
-  let backgroundColor = 'transparent';
-  if (isActive) {
-    backgroundColor = 'rgb(109, 109, 109)';
-  } else if (canDrop) {
-    backgroundColor = 'rgb(189, 192, 195)';
-  }
+  let backgroundColor = isActive
+    ? 'rgb(109, 109, 109)'
+    : canDrop
+    ? 'rgb(189, 192, 195)'
+    : 'transparent';
 
   return (
     <div
@@ -63,8 +122,8 @@ const TimelineDropTarget = ({
     >
       {frames && frames.length ? (
         frames.map((frame, index) => <FrameBar key={index} frame={frame} />)
-      ) : state.currentHoveringItem ? (
-        <FrameBar key={index} frame={state.currentHoveringItem} />
+      ) : !isEmpty(hoveringItem) && type === hoveringItem.type && isOver ? (
+        <FrameBar key={index} frame={hoveringItem} />
       ) : (
         ''
       )}

@@ -3,10 +3,13 @@ import { Figure } from 'react-bootstrap';
 import { useDrag } from 'react-dnd';
 
 const MediaItem = ({ index, value, isDropped, ...props }) => {
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging, isOverTarget }, drag] = useDrag({
     item: {
       index,
       type: value.type,
+    },
+    isDragging: (monitor) => {
+      // console.log(monitor);
     },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
@@ -16,6 +19,7 @@ const MediaItem = ({ index, value, isDropped, ...props }) => {
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
+      isOverTarget: monitor.isOverTarget(),
     }),
   });
 

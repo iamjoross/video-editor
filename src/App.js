@@ -13,49 +13,12 @@ import './App.scss';
 const App = memo(() => {
   const { state, dispatch } = useContext(store);
 
-  const [timelineLayers, setTimelineLayers] = useState(state.layers);
-  const [droppedMedia, setDroppedMedia] = useState([]);
-  // const [mediaItems] = useState(media);
-
-  const handleDrop = useCallback(
-    (index, item, monitor, ref) => {
-      const offset = monitor.getSourceClientOffset();
-      if (offset && ref.current) {
-        const dropTargetXy = ref.current.getBoundingClientRect();
-        const currentCoords = {
-          x: offset.x - dropTargetXy.left,
-          y: offset.y - dropTargetXy.top,
-        };
-        dispatch({
-          type: UPDATE_CURRENT_DROPPED_ITEM,
-          payload: currentCoords,
-        });
-      }
-      setDroppedMedia(
-        update(
-          droppedMedia,
-          item.index ? { $push: [item.index] } : { $push: [] }
-        )
-      );
-      setTimelineLayers(
-        update(timelineLayers, {
-          [index]: {
-            lastDroppedItem: {
-              $set: item,
-            },
-          },
-        })
-      );
-    },
-    [dispatch, droppedMedia, timelineLayers]
-  );
-
   return (
     <Container fluid className='d-flex h-100 flex-column'>
       <TimelineTopBar />
       <Row className='d-flex m-0' style={{ flex: 6 }}>
         <Col md={3} className='border border-light mr-4'>
-          <MediaContainer media={state.media} droppedMedia={droppedMedia} />
+          <MediaContainer media={state.media} />
         </Col>
         <Col className='border border-light p-0'>
           <ReactPlayer
@@ -68,7 +31,7 @@ const App = memo(() => {
       </Row>
       <Row md={8} className='d-flex mb-3 mt-4 mx-0' style={{ flex: 3 }}>
         <Col className='p-0'>
-          <Timeline handleDrop={handleDrop} />
+          <Timeline />
         </Col>
       </Row>
     </Container>

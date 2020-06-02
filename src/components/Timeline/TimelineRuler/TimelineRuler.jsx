@@ -3,9 +3,9 @@ import React, { useRef, useLayoutEffect, useState, useCallback } from 'react';
 
 const TimelineRuler = (props) => {
   const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(41);
-  const [scrollPos, setScrollPos] = useState(0);
-  const [canvas, setCanvas] = useState({});
+  const [height] = useState(41);
+  const [scrollPos] = useState(0);
+  const [canvas] = useState({});
   const [didMount, setDidMount] = useState(false);
 
   const divRef = useRef(null);
@@ -91,7 +91,7 @@ const TimelineRuler = (props) => {
 
   const resize = useCallback(() => {
     const canvas = canvasRef.current;
-    const { widthCustom, heightCustom } = props;
+    const { widthCustom } = props;
 
     if (!didMount) {
       setWidth(widthCustom || canvas.offsetWidth);

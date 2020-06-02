@@ -8,10 +8,7 @@ import React, {
 import { useDrop } from 'react-dnd';
 import FrameBar from '../FrameBar';
 import { store } from '../../../store';
-import {
-  UPDATE_CURRENT_HOVERING_ITEM,
-  UPDATE_CURRENT_DROPPED_ITEM,
-} from '../../../constants';
+import { UPDATE_CURRENT_DROPPED_ITEM } from '../../../constants';
 import { useWait, isEmpty } from '../../../util';
 
 const TimelineDropTarget = ({
@@ -22,13 +19,12 @@ const TimelineDropTarget = ({
   title,
   ...props
 }) => {
-  const { state, dispatch } = useContext(store);
+  const { dispatch } = useContext(store);
   const [wait, done] = useWait();
   const doneRef = useRef(done);
   const collectedPropsRef = useRef();
   const ref = useRef();
   const [hoveringItem, setHoveringItem] = useState({});
-  const [isBeingHovered, setIsBeingHovered] = useState(false);
 
   useEffect(() => {
     doneRef.current = done;
@@ -39,11 +35,13 @@ const TimelineDropTarget = ({
     if (!(offset && targetRef.current)) return null;
 
     const dropTargetXy = targetRef.current.getBoundingClientRect();
-    if (offset.x - dropTargetXy.left < 0) return;
+    const x =
+      offset.x - dropTargetXy.left < 0 ? 0 : offset.x - dropTargetXy.left;
+    const y = offset.y - dropTargetXy.top;
 
     const coords = {
-      x: offset.x - dropTargetXy.left,
-      y: offset.y - dropTargetXy.top,
+      x,
+      y,
     };
 
     return coords;
@@ -56,18 +54,14 @@ const TimelineDropTarget = ({
         const coords = getOffsetCoords(monitor, targetRef);
         wait(120); // debounce
         setHoveringItem({ type: item.type, coords });
-        setIsBeingHovered(true);
-        console.log(isBeingHovered);
-      } else {
-        setIsBeingHovered(false);
-        console.log(isBeingHovered);
       }
     },
-    [isBeingHovered, wait]
+    [wait]
   );
 
   const handleDrop = useCallback(
     (index, item, monitor, targetRef) => {
+      console.log('dropped');
       if (monitor.canDrop()) {
         const coords = getOffsetCoords(monitor, targetRef);
         dispatch({

@@ -1,17 +1,15 @@
-import React, { memo, useCallback, useState, useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import ReactPlayer from 'react-player';
 import Timeline from './components/Timeline';
 import TimelineTopBar from './components/Timeline/TimelineTopBar';
 import MediaContainer from './components/MediaContainer';
-import update from 'immutability-helper';
 import { store } from './store';
-import { UPDATE_CURRENT_DROPPED_ITEM } from './constants';
 import 'holderjs';
 import './App.scss';
 
 const App = memo(() => {
-  const { state, dispatch } = useContext(store);
+  const { state } = useContext(store);
 
   return (
     <Container fluid className='d-flex h-100 flex-column'>

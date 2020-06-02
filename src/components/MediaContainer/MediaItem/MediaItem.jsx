@@ -3,7 +3,8 @@ import { Figure } from 'react-bootstrap';
 import { useDrag } from 'react-dnd';
 
 const MediaItem = ({ index, value, isDropped, ...props }) => {
-  const [{ isDragging, isOverTarget }, drag] = useDrag({
+  // const [{ isDragging, isOverTarget }, drag] = useDrag({
+  const [{ ...collectedProps }, drag] = useDrag({
     item: {
       index,
       type: value.type,

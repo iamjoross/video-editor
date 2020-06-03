@@ -1,4 +1,6 @@
 export const VIDEO = 'video';
 export const AUDIO = 'audio';
 export const TEXT = 'text';
-export const UPDATE_CURRENT_DROPPED_ITEM = 'updateCurrentDroppedItem';
+export const ADD_FRAME_TO_LAYER = 'addFrameToLayer';
+export const UPDATE_FRAME_COORD = 'updateFrameCoord';
+export const UPDATE_WAS_DRAGGING_FRAME = 'updateWasDragginFrame';

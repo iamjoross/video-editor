@@ -2,8 +2,9 @@ import React, { createContext, useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import update from 'immutability-helper';
 import {
-  UPDATE_CURRENT_DROPPED_ITEM,
-  UPDATE_CURRENT_HOVERING_ITEM,
+  ADD_FRAME_TO_LAYER,
+  UPDATE_FRAME_COORD,
+  UPDATE_WAS_DRAGGING_FRAME,
 } from './constants';
 import 'holderjs';
 
@@ -14,8 +15,7 @@ var layers = [
     type: 'video',
     accept: 'video',
     lastDroppedItem: null,
-    // { left: 100, duration: 80 }
-    frames: [],
+    frames: {},
   },
   {
     id: uuidv4(),
@@ -23,7 +23,7 @@ var layers = [
     type: 'audio',
     accept: 'audio',
     lastDroppedItem: null,
-    frames: [],
+    frames: {},
   },
   {
     id: uuidv4(),
@@ -31,7 +31,7 @@ var layers = [
     type: 'text',
     accept: 'text',
     lastDroppedItem: null,
-    frames: [],
+    frames: {},
   },
 ];
 
@@ -91,34 +91,47 @@ const initState = {
   media,
   frames,
   currentDroppedItem,
+  wasDraggingFrame: false,
 };
 
 const store = createContext(initState);
 const { Provider } = store;
 
-const StateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer((state, action) => {
-    switch (action.type) {
-      case UPDATE_CURRENT_DROPPED_ITEM:
-        if (action.payload.item.type === 'video') {
-          return update(state, {
-            layers: { 0: { frames: { $push: [action.payload] } } },
-          });
-        } else if (action.payload.item.type === 'audio') {
-          return update(state, {
-            layers: { 1: { frames: { $push: [action.payload] } } },
-          });
-        } else {
-          return update(state, {
-            layers: { 2: { frames: { $push: [action.payload] } } },
-          });
-        }
+const reducer = (state, action) => {
+  const mediaType = action.payload.mediaType;
+  const layerIndex = mediaType === 'video' ? 0 : mediaType === 'audio' ? 1 : 2;
 
-        return state;
-      default:
-        throw new Error();
-    }
-  }, initState);
+  switch (action.type) {
+    case ADD_FRAME_TO_LAYER:
+      delete action.payload.mediaType;
+      return update(state, {
+        layers: { [layerIndex]: { frames: { $merge: { ...action.payload } } } },
+      });
+
+    case UPDATE_FRAME_COORD:
+      return update(state, {
+        layers: {
+          [layerIndex]: {
+            frames: {
+              [action.payload.key]: {
+                coords: { x: { $set: action.payload.x } },
+              },
+            },
+          },
+        },
+      });
+
+    case UPDATE_WAS_DRAGGING_FRAME:
+      return update(state, {
+        wasDraggingFrame: { $set: action.payload },
+      });
+    default:
+      throw new Error();
+  }
+};
+
+const StateProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initState);
 
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };

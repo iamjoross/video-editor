@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Figure } from 'react-bootstrap';
 import { useDrag } from 'react-dnd';
+import { store } from '../../../store';
+import { UPDATE_WAS_DRAGGING_FRAME } from '../../../constants';
 
 const MediaItem = ({ index, value, isDropped, ...props }) => {
+  const { dispatch } = useContext(store);
   // const [{ isDragging, isOverTarget }, drag] = useDrag({
-  const [{ ...collectedProps }, drag] = useDrag({
+  const [, drag] = useDrag({
     item: {
       index,
       type: value.type,
     },
     isDragging: (monitor) => {
       // console.log(monitor);
+    },
+    begin: (monitor) => {
+      dispatch({ type: UPDATE_WAS_DRAGGING_FRAME, payload: false });
     },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();

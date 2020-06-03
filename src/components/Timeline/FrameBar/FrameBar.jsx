@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useDrag } from 'react-dnd';
+import { store } from '../../../store';
+import { UPDATE_WAS_DRAGGING_FRAME } from '../../../constants';
 
 const styles = {
   position: 'absolute',
@@ -8,28 +11,56 @@ const styles = {
   justifyContent: 'center',
   alignItems: 'center',
   display: 'flex',
+  cursor: 'grab',
 };
 const FrameBar = ({ frame, overDraggable, ...props }) => {
+  const [key, frameItem] = frame;
+
+  const { dispatch } = useContext(store);
+  const [, drag] = useDrag({
+    item: { key, ...frameItem.item },
+    isDragging: (monitor) => {},
+    begin: (monitor) => {
+      dispatch({ type: UPDATE_WAS_DRAGGING_FRAME, payload: true });
+    },
+    end: (item, monitor) => {
+      // const dropResult = monitor.getDropResult();
+      // dispatch({ type: UPDATE_FRAME_COORD, payload: { frameItem } });
+      // if (item && dropResult) {
+      //   // alert(`You dropped ${item.name} into ${dropResult.name}!`);
+      // }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+      isOverTarget: monitor.isOverTarget(),
+    }),
+  });
+
   const backgroundColor =
-    frame.item.type === 'video'
+    frameItem.item.type === 'video'
       ? 'rgb(0,140,222)'
-      : frame.item.type === 'audio'
+      : frameItem.item.type === 'audio'
       ? 'rgb(0,229,174)'
-      : frame.item.type === 'text'
+      : frameItem.item.type === 'text'
       ? 'rgb(255,56,0)'
       : 'transparent';
-
-  const color = frame.item.type === 'video' ? 'rgb(255,255,255)' : 'rgb(0,0,0)';
-
+  const color =
+    frameItem.item.type === 'video' ? 'rgb(255,255,255)' : 'rgb(0,0,0)';
   const opacity = overDraggable ? '50%' : '100%';
-
   const left = `${
-    frame.left ? frame.left : frame.coords.x ? frame.coords.x : 0
+    frameItem.left
+      ? frameItem.left
+      : frameItem.coords.x
+      ? frameItem.coords.x
+      : 0
   }px`;
 
   return (
-    <div style={{ ...styles, backgroundColor, opacity, left, color }}>
-      {frame.item.index}
+    <div
+      style={{ ...styles, backgroundColor, opacity, left, color }}
+      ref={drag}
+    >
+      {frameItem.item.index}
     </div>
   );
 };

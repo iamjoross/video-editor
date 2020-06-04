@@ -54,10 +54,17 @@ const TimelineDropTarget = ({
       if (monitor.canDrop()) {
         const coords = getOffsetCoords(monitor, targetRef);
         wait(120); // debounce
-        setHoveringItem({ [uuidv4()]: { item, coords }, mediaType: item.type });
+        setHoveringItem({
+          [uuidv4()]: {
+            item,
+            origDuration: state.currentDraggedItem.duration,
+            coords,
+          },
+          mediaType: item.type,
+        });
       }
     },
-    [wait]
+    [state.currentDraggedItem.duration, wait]
   );
 
   const handleDrop = useCallback(
@@ -66,7 +73,14 @@ const TimelineDropTarget = ({
         const coords = getOffsetCoords(monitor, targetRef);
         dispatch({
           type: ADD_FRAME_TO_LAYER,
-          payload: { [uuidv4()]: { item, coords }, mediaType: item.type },
+          payload: {
+            [uuidv4()]: {
+              item,
+              origDuration: state.currentDraggedItem.duration,
+              coords,
+            },
+            mediaType: item.type,
+          },
         });
       } else if (monitor.canDrop() && state.wasDraggingFrame) {
         const coords = getOffsetCoords(monitor, targetRef);
@@ -76,7 +90,7 @@ const TimelineDropTarget = ({
         });
       }
     },
-    [dispatch, state.wasDraggingFrame]
+    [dispatch, state.currentDraggedItem.duration, state.wasDraggingFrame]
   );
 
   const [{ isOver, canDrop }, dropTarget] = useDrop({
@@ -121,7 +135,12 @@ const TimelineDropTarget = ({
           ))
         : isMediaItemHovering
         ? Object.entries(newHoveringItem).map((frame, index) => (
-            <FrameBar key={index} frame={frame} overDraggable={true} />
+            <FrameBar
+              key={index}
+              frame={frame}
+              size={state.currentDraggedItem.origDuration}
+              overDraggable={true}
+            />
           ))
         : ''}
     </div>

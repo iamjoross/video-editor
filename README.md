@@ -1,3 +1,14 @@
+## Todo
+
+- [] make frames snap to grid
+- [] make frames resizable
+
+## important sources
+
+- https://react-dnd.github.io/react-dnd/docs/api/use-drag-layer
+- https://github.com/kolodny/immutability-helper
+- https://app.netlify.com/sites/awesome-babbage-e7e2ae/deploys
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

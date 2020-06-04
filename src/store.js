@@ -5,6 +5,7 @@ import {
   ADD_FRAME_TO_LAYER,
   UPDATE_FRAME_COORD,
   UPDATE_WAS_DRAGGING_FRAME,
+  UPDATE_CURRENT_DRAGGED_FRAME,
 } from './constants';
 import 'holderjs';
 
@@ -39,58 +40,39 @@ const media = {
   'media-1': {
     image: 'holder.js/150x100?theme=sky',
     type: 'video',
+    origDuration: 300,
   },
   'media-2': {
     image: 'holder.js/150x100?theme=vine',
     type: 'audio',
+    origDuration: 20,
   },
   'media-3': {
     image: 'holder.js/150x100?theme=lava',
     type: 'text',
+    origDuration: 150,
   },
   'media-4': {
     image: 'holder.js/150x100?theme=sky',
     type: 'video',
+    origDuration: 90,
   },
   'media-5': {
     image: 'holder.js/150x100?theme=sky',
     type: 'video',
+    origDuration: 65,
   },
   'media-6': {
     image: 'holder.js/150x100?theme=lava',
     type: 'text',
+    origDuration: 100,
   },
 };
-const frames = {};
-// var frames = {
-//   '3d1df1b4-4d9d-45a4-bf14-cb580ee74675': [
-//     {
-//       name: 'Hello.png',
-//       second: 0,
-//       duration: 70,
-//     },
-//     {
-//       name: 'Welcome.png',
-//       second: 130,
-//       duration: 200,
-//     },
-//   ],
-//   '7d8c4210-0cfa-4a10-8b21-01e6601e00bf': [
-//     {
-//       name: 'Goodbye.png',
-//       second: 10,
-//       duration: 150,
-//     },
-//   ],
-//   '65079f30-47a8-4469-833e-4f0eea04d233': [],
-// };
 
-const currentDroppedItem = null;
 const initState = {
   layers,
   media,
-  frames,
-  currentDroppedItem,
+  currentDraggedItem: {},
   wasDraggingFrame: false,
 };
 
@@ -125,6 +107,11 @@ const reducer = (state, action) => {
       return update(state, {
         wasDraggingFrame: { $set: action.payload },
       });
+
+    case UPDATE_CURRENT_DRAGGED_FRAME:
+      return update(state, {
+        currentDraggedItem: { $set: action.payload },
+      });
     default:
       throw new Error();
   }
@@ -132,7 +119,6 @@ const reducer = (state, action) => {
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initState);
-
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 

@@ -1,22 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef } from 'react';
+import { ResizableBox } from 'react-resizable';
 import { useDrag } from 'react-dnd';
 import { store } from '../../../store';
 import { UPDATE_WAS_DRAGGING_FRAME } from '../../../constants';
+import './FrameBar.scss';
 
 const styles = {
   position: 'absolute',
-  width: '100px',
-  height: '90%',
   borderRadius: '5px',
   justifyContent: 'center',
   alignItems: 'center',
   display: 'flex',
   cursor: 'grab',
 };
-const FrameBar = ({ frame, overDraggable, ...props }) => {
+const FrameBar = ({ frame, size, overDraggable, ...props }) => {
   const [key, frameItem] = frame;
-
+  const [isMouseDown, toggleMouseDown] = useState(false);
   const { dispatch } = useContext(store);
+  const divRef = useRef();
   const [, drag] = useDrag({
     item: { key, ...frameItem.item },
     isDragging: (monitor) => {},
@@ -55,14 +56,39 @@ const FrameBar = ({ frame, overDraggable, ...props }) => {
       : 0
   }px`;
 
+  const [height, setHeight] = useState(
+    frameItem.item.type === 'video' ? 44 : 31
+  );
+  const [width, setWidth] = useState(size ? size : frameItem.origDuration);
+
   return (
     <div
-      style={{ ...styles, backgroundColor, opacity, left, color }}
-      ref={drag}
+      style={{ ...styles, backgroundColor, opacity, left, color, width }}
+      ref={isMouseDown ? drag : divRef}
+      onMouseDown={(evt) => toggleMouseDown(true)}
+      onMouseUp={(evt) => toggleMouseDown(false)}
     >
-      {frameItem.item.index}
+      <ResizableBox
+        width={width}
+        height={height}
+        minConstraints={[-Infinity, height]}
+        maxConstraints={[Infinity, height]}
+        handleSize={[100, 100]}
+        resizeHandles={['e', 'w']}
+        onResizeStart={() => toggleMouseDown(true)}
+        onResizeStop={() => toggleMouseDown(false)}
+        onResize={(_, { size }) => {
+          setHeight(size.height);
+          setWidth(size.width);
+        }}
+        draggable={false}
+      />
     </div>
   );
+};
+
+FrameBar.defaultProps = {
+  size: 0,
 };
 
 export default FrameBar;

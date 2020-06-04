@@ -11,9 +11,8 @@ export const useWait = () => {
   return [wait, done];
 };
 
-export const isEmpty = (obj) => {
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) return false;
-  }
-  return true;
+export const snapToGrid = (x, y) => {
+  const snappedX = Math.round(x / 32) * 32;
+  const snappedY = Math.round(y / 32) * 32;
+  return [snappedX, snappedY];
 };

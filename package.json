@@ -7,6 +7,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.0",
+    "git": "^0.1.5",
     "holderjs": "^2.9.7",
     "immutability-helper": "^3.0.2",
     "node-sass": "^4.14.1",

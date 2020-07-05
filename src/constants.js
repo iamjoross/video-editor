@@ -6,3 +6,4 @@ export const UPDATE_FRAME_COORD = 'updateFrameCoord';
 export const UPDATE_WAS_DRAGGING_FRAME = 'updateWasDragginFrame';
 export const UPDATE_CURRENT_DRAGGED_FRAME = 'updateCurrentDraggedFrame';
 export const TOGGLE_MEDIA_VIEW = 'toggleMediaView';
+export const TOGGLE_EDITING_TITLE = 'toggleEditingTitle';

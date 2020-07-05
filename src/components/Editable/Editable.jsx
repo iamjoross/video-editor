@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import {store} from '../../store';
+import {TOGGLE_EDITING_TITLE} from '../../constants';
 import './Editable.scss';
 
 const Editable = ({
@@ -9,15 +11,13 @@ const Editable = ({
   childRef,
   ...props
 }) => {
-  const [isEditing, setEditing] = useState(false);
+  const { state, dispatch } = useContext(store);
 
   useEffect(() => {
-    if (childRef && childRef.current && isEditing === true) {
+    if (childRef && childRef.current && state.isEditingTitle === true) {
       childRef.current.focus();
-
-      console.log(12);
     }
-  }, [isEditing, childRef]);
+  }, [ childRef, state.isEditingTitle]);
 
   const handleKeyDown = (event, type) => {
     const { key } = event;
@@ -29,15 +29,21 @@ const Editable = ({
       (type === 'textarea' && keys.indexOf(key) > -1) ||
       (type !== 'textarea' && allKeys.indexOf(key) > -1)
     ) {
-      setEditing(false);
+      dispatch({
+        type: TOGGLE_EDITING_TITLE,
+        payload: false,
+      });
     }
   };
 
   return (
     <section {...props}>
-      {isEditing ? (
+      {state.isEditingTitle ? (
         <div
-          onBlur={() => setEditing(false)}
+          onBlur={() => dispatch({
+            type: TOGGLE_EDITING_TITLE,
+            payload: false,
+          })}
           onKeyDown={(e) => handleKeyDown(e, type)}
           onFocus={(e) => e.target.select()}
         >
@@ -46,7 +52,10 @@ const Editable = ({
       ) : (
         <div
           className={`rounded py-2 px-3 text-gray-700 leading-tight whitespace-pre-wrap hover:shadow-outline editable-${type}`}
-          onClick={() => setEditing(true)}
+          onClick={() => dispatch({
+            type: TOGGLE_EDITING_TITLE,
+            payload: true,
+          })}
         >
           <span className={`${text ? 'text-black' : 'text-gray-500'}`}>
             {text || placeholder || 'Editable content'}

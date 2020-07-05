@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Row, Col, Form, Button } from 'react-bootstrap';
+import {store} from '../../store';
 import Editable from '../Editable';
 
-import { CameraVideo, CursorText, Soundwave } from 'react-bootstrap-icons';
+import { CameraVideo, CursorText, Soundwave, Pencil } from 'react-bootstrap-icons';
 
 const TopBar = (props) => {
+  const { state } = useContext(store);
   const [fileName, setFileName] = useState('Untitled Video');
   const inputRef = useRef();
 
@@ -28,6 +30,7 @@ const TopBar = (props) => {
             onChange={(e) => setFileName(e.target.value)}
           />
         </Editable>
+        {!state.isEditingTitle ? <Pencil color='rgb(222,226,230)'/> : ''}
       </Col>
       <Col md={3} className='d-flex align-items-center justify-content-end'>
         <span className=' ml-2'>Add Item</span>

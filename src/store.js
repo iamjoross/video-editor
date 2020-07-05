@@ -6,7 +6,8 @@ import {
   UPDATE_FRAME_COORD,
   UPDATE_WAS_DRAGGING_FRAME,
   UPDATE_CURRENT_DRAGGED_FRAME,
-  TOGGLE_MEDIA_VIEW
+  TOGGLE_MEDIA_VIEW,
+  TOGGLE_EDITING_TITLE
 } from './constants';
 import 'holderjs';
 
@@ -88,6 +89,7 @@ const initState = {
   media,
   currentDraggedItem: {},
   wasDraggingFrame: false,
+  isEditingTitle: false
 };
 
 const store = createContext(initState);
@@ -102,6 +104,12 @@ const reducer = (state, action) => {
       return update(state, {
         currentMediaView: { $set: action.payload },
       });
+
+    case TOGGLE_EDITING_TITLE:
+      return update(state, {
+        isEditingTitle: { $set: action.payload },
+      });
+
 
     case ADD_FRAME_TO_LAYER:
       delete action.payload.mediaType;

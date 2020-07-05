@@ -15,6 +15,7 @@ const MediaItemsContainer = styled.div`
   display: grid!important;
   grid-template-columns: ${props => (props.view === "grid") ? "100px 100px 100px" : "320px"};
   grid-gap: 10px;
+  overflow: auto;
 `;
 
 const MediaContainer = ({ media, droppedMedia, ...props }) => {

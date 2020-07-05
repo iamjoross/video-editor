@@ -3,3 +3,38 @@
     display: flex!important;
   }
 }
+
+.media-grid{
+  .media-item-details{
+    font-size: 14px;
+  }
+
+  .media-item__name{
+    width: 100px;
+    p{
+      margin: 0;
+      display: flex;
+      flex-direction:row;
+      flex-wrap: nowrap;
+      justify-content:flex-start;
+
+      .start{
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        flex-shrink: 1;
+        margin-right: -5px;
+      }
+
+      .end{
+        white-space:nowrap;
+        flex-basis:content;
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+    }
+  }
+  .media-item__timestamp{
+    font-size: 12px;
+  }
+}

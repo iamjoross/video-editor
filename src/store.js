@@ -42,7 +42,7 @@ const media = {
     id: 1,
     image: 'https://picsum.photos/100/100?random=1',
     type: 'video',
-    fileName: '1.jpg',
+    fileName: '1123213fs2weqwe.jpg',
     origDuration: 300,
   },
   'media-2': {
@@ -83,7 +83,7 @@ const media = {
 };
 
 const initState = {
-  currentMediaView: 'list',
+  currentMediaView: 'grid',
   layers,
   media,
   currentDraggedItem: {},

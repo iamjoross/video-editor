@@ -1,0 +1,34 @@
+.view-btn{
+  border: 0;
+  background-color: transparent;
+  font-size: 20px;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  transition: fill .4s ease;
+
+  &:hover,
+    &:focus {
+        color: #0069d9;
+    }
+
+    &:active {
+        top: .08em;
+    }
+
+  svg{
+    flex-shrink: 0;
+    height: 1em;
+    width: 1em;
+    fill: currentColor;
+    transition: fill .4s ease;
+  }
+
+  &-grid{
+    font-size: 17px;
+  }
+}
+
+.active-view{
+  color: #0069d9;
+}

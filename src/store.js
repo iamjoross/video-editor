@@ -6,6 +6,7 @@ import {
   UPDATE_FRAME_COORD,
   UPDATE_WAS_DRAGGING_FRAME,
   UPDATE_CURRENT_DRAGGED_FRAME,
+  TOGGLE_MEDIA_VIEW
 } from './constants';
 import 'holderjs';
 
@@ -38,38 +39,51 @@ var layers = [
 
 const media = {
   'media-1': {
-    image: 'holder.js/150x100?theme=sky',
+    id: 1,
+    image: 'https://picsum.photos/100/100?random=1',
     type: 'video',
+    fileName: '1.jpg',
     origDuration: 300,
   },
   'media-2': {
-    image: 'holder.js/150x100?theme=vine',
+    id: 2,
+    image: 'https://picsum.photos/100/100?random=2',
     type: 'audio',
+    fileName: '1.jpg',
     origDuration: 20,
   },
   'media-3': {
-    image: 'holder.js/150x100?theme=lava',
+    id: 3,
+    image: 'https://picsum.photos/100/100?random=3',
     type: 'text',
+    fileName: '1.jpg',
     origDuration: 150,
   },
   'media-4': {
-    image: 'holder.js/150x100?theme=sky',
+    id: 4,
+    image: 'https://picsum.photos/100/100?random=4',
     type: 'video',
+    fileName: '1.jpg',
     origDuration: 90,
   },
   'media-5': {
-    image: 'holder.js/150x100?theme=sky',
+    id: 5,
+    image: 'https://picsum.photos/100/100?random=5',
     type: 'video',
+    fileName: '1.jpg',
     origDuration: 65,
   },
   'media-6': {
-    image: 'holder.js/150x100?theme=lava',
+    id: 6,
+    image: 'https://picsum.photos/100/100?random=6',
     type: 'text',
+    fileName: '1.jpg',
     origDuration: 100,
   },
 };
 
 const initState = {
+  currentMediaView: 'list',
   layers,
   media,
   currentDraggedItem: {},
@@ -84,6 +98,11 @@ const reducer = (state, action) => {
   const layerIndex = mediaType === 'video' ? 0 : mediaType === 'audio' ? 1 : 2;
 
   switch (action.type) {
+    case TOGGLE_MEDIA_VIEW:
+      return update(state, {
+        currentMediaView: { $set: action.payload },
+      });
+
     case ADD_FRAME_TO_LAYER:
       delete action.payload.mediaType;
       return update(state, {

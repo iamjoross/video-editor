@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { Row, Col, Form, Button } from 'react-bootstrap';
-import Editable from '../../Editable';
+import Editable from '../Editable';
 
 import { CameraVideo, CursorText, Soundwave } from 'react-bootstrap-icons';
 
-const TimelineTopBar = (props) => {
+const TopBar = (props) => {
   const [fileName, setFileName] = useState('Untitled Video');
   const inputRef = useRef();
 
@@ -49,4 +49,4 @@ const TimelineTopBar = (props) => {
   );
 };
 
-export default TimelineTopBar;
+export default TopBar;

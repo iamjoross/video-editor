@@ -2,7 +2,7 @@ import React, { memo, useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import ReactPlayer from 'react-player';
 import Timeline from './components/Timeline';
-import TimelineTopBar from './components/Timeline/TimelineTopBar';
+import TopBar from './components/TopBar';
 import MediaContainer from './components/MediaContainer';
 import { store } from './store';
 import 'holderjs';
@@ -13,7 +13,7 @@ const App = memo(() => {
 
   return (
     <Container fluid className='d-flex h-100 flex-column'>
-      <TimelineTopBar />
+      <TopBar />
       <Row className='d-flex m-0' style={{ flex: 6 }}>
         <Col md={3} className='border border-light mr-4'>
           <MediaContainer media={state.media} />

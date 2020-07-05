@@ -1,15 +1,26 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import styled from "styled-components";
 import MediaList from './MediaList';
 import ViewOptions from './ViewOptions';
-import styled from "styled-components";
-import './MediaContainer.scss';
+import {store} from '../../store';
 
 const MediaHeader = styled(Row)`
   min-height: 80px;
 `;
 
+const MediaItemsContainer = styled.div`
+  width: 320px;
+  margin-left: -15px;
+  display: grid!important;
+  grid-template-columns: ${props => (props.view === "grid") ? "100px 100px 100px" : "320px"};
+  grid-gap: 10px;
+`;
+
 const MediaContainer = ({ media, droppedMedia, ...props }) => {
+  const { state } = useContext(store);
+  const variableAttribute =  { view: state.currentMediaView} ;
+
   return (
     <Container className='d-flex h-100 flex-column'>
       <MediaHeader className='d-flex align-items-center'>
@@ -18,11 +29,9 @@ const MediaContainer = ({ media, droppedMedia, ...props }) => {
           <ViewOptions />
         </Col>
       </MediaHeader>
-      <Row
-        className='d-flex justify-content-start media-container overflow-auto justify-content-between'
-      >
+      <MediaItemsContainer {...variableAttribute}>
         <MediaList media={media} droppedMedia={droppedMedia} />
-      </Row>
+      </MediaItemsContainer>
     </Container>
   );
 };

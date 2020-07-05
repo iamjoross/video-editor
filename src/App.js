@@ -19,12 +19,12 @@ const App = memo(() => {
           <MediaContainer media={state.media} />
         </Col>
         <Col className='border border-light p-0'>
-          <ReactPlayer
+          {/* <ReactPlayer
             url='https://www.youtube.com/watch?v=ysz5S6PUM-U'
             width='100%'
             controls={true}
             height='100%'
-          />
+          /> */}
         </Col>
       </Row>
       <Row md={8} className='d-flex mb-3 mt-4 mx-0' style={{ flex: 3 }}>

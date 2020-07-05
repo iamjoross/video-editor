@@ -7,7 +7,8 @@ import {
   UPDATE_WAS_DRAGGING_FRAME,
   UPDATE_CURRENT_DRAGGED_FRAME,
   TOGGLE_MEDIA_VIEW,
-  TOGGLE_EDITING_TITLE
+  TOGGLE_EDITING_TITLE,
+  SET_MEDIA_FILTER
 } from './constants';
 import 'holderjs';
 
@@ -89,7 +90,8 @@ const initState = {
   media,
   currentDraggedItem: {},
   wasDraggingFrame: false,
-  isEditingTitle: false
+  isEditingTitle: false,
+  mediaFilter: 'all'
 };
 
 const store = createContext(initState);
@@ -108,6 +110,11 @@ const reducer = (state, action) => {
     case TOGGLE_EDITING_TITLE:
       return update(state, {
         isEditingTitle: { $set: action.payload },
+      });
+
+    case SET_MEDIA_FILTER:
+      return update(state, {
+        mediaFilter: { $set: action.payload },
       });
 
 

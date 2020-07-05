@@ -7,3 +7,4 @@ export const UPDATE_WAS_DRAGGING_FRAME = 'updateWasDragginFrame';
 export const UPDATE_CURRENT_DRAGGED_FRAME = 'updateCurrentDraggedFrame';
 export const TOGGLE_MEDIA_VIEW = 'toggleMediaView';
 export const TOGGLE_EDITING_TITLE = 'toggleEditingTitle';
+export const SET_MEDIA_FILTER = 'setMediaFilter';

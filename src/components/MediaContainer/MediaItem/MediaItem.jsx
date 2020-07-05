@@ -81,8 +81,6 @@ const MediaItem = ({ index, value, isDropped, ...props }) => {
     );
   };
 
-
-
   const MediaListItemDetails = () => {
     return (
       <div className="media-item-details px-2 d-flex flex-row w-75 justify-content-between align-items-center" style={{backgroundColor: '#f2f5f8'}}>

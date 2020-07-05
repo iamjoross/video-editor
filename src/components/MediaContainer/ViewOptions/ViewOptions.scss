@@ -32,3 +32,46 @@
 .active-view{
   color: #0069d9;
 }
+
+.filter{
+
+  &__icon{
+    border: 0;
+    background-color: transparent;
+    font-size: 17px;
+    padding: 0;
+    width: 18px;
+    height: 30px;
+    transition: fill .4s ease;
+  }
+
+  &__dropdown {
+    padding: 0px 8px;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+
+    a{
+      display: flex;
+      align-items: center;
+
+      svg{
+        fill: currentColor;
+      }
+
+      span{
+        font-size: 10px;
+        padding-left: 8px;
+      }
+    }
+
+  }
+
+}
+
+.list-unstyled{
+  margin: 0;
+
+  svg{
+    margin-right: 10px;
+  }
+}

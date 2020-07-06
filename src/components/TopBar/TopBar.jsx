@@ -33,7 +33,7 @@ const TopBar = (props) => {
         {!state.isEditingTitle ? <Pencil color='rgb(222,226,230)'/> : ''}
       </Col>
       <Col md={3} className='d-flex align-items-center justify-content-end'>
-        <span className=' ml-2'>Add Item</span>
+        {/* <span className=' ml-2'>Add Item</span>
         <div className='border icon-border icon-video ml-2'>
           <CameraVideo color='rgb(52,220,185)' />
         </div>
@@ -42,7 +42,7 @@ const TopBar = (props) => {
         </div>
         <div className='border icon-border icon-text ml-2'>
           <Soundwave color='rgb(255,174,156)' />
-        </div>
+        </div> */}
 
         <Button className='ml-2' variant='primary' size='md'>
           Render

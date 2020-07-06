@@ -22,7 +22,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 
 const CustomMenu = React.forwardRef(
   ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
-    const [value, setValue] = useState('');
+    const [value, ] = useState('');
 
     return (
       <div

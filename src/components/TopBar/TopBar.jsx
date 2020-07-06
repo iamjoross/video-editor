@@ -3,7 +3,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import {store} from '../../store';
 import Editable from '../Editable';
 
-import { CameraVideo, CursorText, Soundwave, Pencil } from 'react-bootstrap-icons';
+// import { CameraVideo, CursorText, Soundwave, Pencil } from 'react-bootstrap-icons';
 
 const TopBar = (props) => {
   const { state } = useContext(store);

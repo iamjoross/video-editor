@@ -1,24 +1,10 @@
-import React, {useRef, useContext} from 'react';
+import React, {useRef} from 'react';
 import styled, { keyframes, css } from "styled-components";
 import LazyLoad from "react-lazyload";
-import { store } from '../../store';
 
 
 const ImageWrapper = styled.div`
   position: relative;
-
-  ${({ view }) => view === 'list' ?
-    css`
-      width: 80px;
-      height: 80px;
-    `
-    :
-    css`
-      width: 100px;
-      height: 100px;
-    `
-}
-
 `;
 
 const loadingAnimation = keyframes`
@@ -50,9 +36,7 @@ const StyledImage = styled.img`
   object-fit: cover;
 `;
 
-const LazyImage = ({src, alt}) => {
-  const { state } = useContext(store);
-
+const LazyImage = ({src, alt, style}) => {
   const refPlaceholder = useRef();
 
   const removePlaceholder = () => {
@@ -60,7 +44,7 @@ const LazyImage = ({src, alt}) => {
   };
 
   return (
-    <ImageWrapper view={state.currentMediaView}>
+    <ImageWrapper style={style}>
       <Placeholder ref={refPlaceholder} />
       <LazyLoad>
         <StyledImage

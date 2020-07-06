@@ -96,6 +96,17 @@ const MediaItem = ({ index, value, isDropped, ...props }) => {
   };
 
 
+  const gridImgWrapperStyles = {
+    width: '100px',
+    height: '100px',
+  }
+
+  const listImgWrapperStyles = {
+    width: '100px',
+    height: '100px',
+  }
+
+
   return (
     <MediaWrapper key={index} ref={drag} className={`media-item-wrapper ${state.currentMediaView === 'list' ? 'w-100' : 'flex-column' } media-${state.currentMediaView}`}>
       <LazyImage
@@ -103,6 +114,7 @@ const MediaItem = ({ index, value, isDropped, ...props }) => {
         key={index}
         src={value.image}
         alt={`Random image ${value.id}`}
+        style={state.currentMediaView === 'grid' ? {...gridImgWrapperStyles} : {...listImgWrapperStyles} }
       />
       {state.currentMediaView === 'list' ? <MediaListItemDetails/> : <MediaGridItemDetails details={value} />}
     </MediaWrapper>

@@ -3,6 +3,9 @@ import { ResizableBox } from 'react-resizable';
 import { useDrag } from 'react-dnd';
 import { store } from '../../../store';
 import { UPDATE_WAS_DRAGGING_FRAME } from '../../../constants';
+import styled from "styled-components";
+
+import LazyImage from '../../LazyImage';
 import './FrameBar.scss';
 
 const styles = {
@@ -13,14 +16,20 @@ const styles = {
   display: 'flex',
   cursor: 'grab',
 };
+
+const FrameBarImageWrapper = styled.div`
+  position:absolute;
+  left: 0;
+`;
 const FrameBar = ({ frame, size, overDraggable, ...props }) => {
+  const { state, dispatch } = useContext(store);
   const [key, frameItem] = frame;
   const [isMouseDown, toggleMouseDown] = useState(true);
   const [offsetLeft, setOffsetLeft] = useState(0);
   const [offsetWidth, setOffsetWidth] = useState(0);
   const [left, setLeft] = useState();
+  const [frameImg, setFrameImg] = useState('');
 
-  const { dispatch } = useContext(store);
   const divRef = useRef();
   const boxRef = useRef();
 
@@ -28,7 +37,8 @@ const FrameBar = ({ frame, size, overDraggable, ...props }) => {
     setOffsetWidth(boxRef.current.offsetWidth);
     setOffsetLeft(boxRef.current.parentElement.offsetLeft);
     setLeft(`${frameItem.left ? frameItem.left : frameItem.coords.x ? frameItem.coords.x : 0}px`);
-  },[setOffsetLeft, setLeft, setOffsetWidth, frameItem.left, frameItem.coords.x]);
+    setFrameImg(state.media[frameItem.item.index].image);
+  },[setOffsetLeft, setLeft, setOffsetWidth, frameItem.left, frameItem.coords.x, frameItem.item.index, state.media]);
 
   const [, drag] = useDrag({
     item: { key, ...frameItem.item },
@@ -76,6 +86,7 @@ const FrameBar = ({ frame, size, overDraggable, ...props }) => {
     setLeft(`${newLeft}px`);
   };
 
+  const imageHeight = frameItem.item.type === 'video' ? '44px' : '31px';
 
   return (
     <div
@@ -84,20 +95,29 @@ const FrameBar = ({ frame, size, overDraggable, ...props }) => {
       onMouseDown={(evt) => toggleMouseDown(true)}
       onMouseUp={(evt) => toggleMouseDown(false)}
     >
+      <FrameBarImageWrapper>
+        <LazyImage
+          className='media-item-img'
+          key={frameItem.item.index}
+          src={frameImg}
+          alt={frameImg}
+          style={{height: imageHeight, width: '50px'}}
+        />
+      </FrameBarImageWrapper>
       <div ref={boxRef}>
-      <ResizableBox
-        width={width}
-        height={height}
-        minConstraints={[-Infinity, height]}
-        maxConstraints={[Infinity, height]}
-        handleSize={[100, 100]}
-        resizeHandles={['e', 'w']}
-        onResizeStart={() => toggleMouseDown(true)}
-        onResizeStop={() => toggleMouseDown(false)}
-        onResize={handleResize}
-        // draggable={false}
-        // draggableOpts={{offsetParent: boxRef}}
-      />
+        <ResizableBox
+          width={width}
+          height={height}
+          minConstraints={[-Infinity, height]}
+          maxConstraints={[Infinity, height]}
+          handleSize={[100, 100]}
+          resizeHandles={['e', 'w']}
+          onResizeStart={() => toggleMouseDown(true)}
+          onResizeStop={() => toggleMouseDown(false)}
+          onResize={handleResize}
+          // draggable={false}
+          // draggableOpts={{offsetParent: boxRef}}
+        />
       </div>
     </div>
   );

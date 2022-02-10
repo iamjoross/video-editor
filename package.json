@@ -10,7 +10,7 @@
     "git": "^0.1.5",
     "holderjs": "^2.9.7",
     "immutability-helper": "^3.0.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-icons": "^1.0.2-alpha4",
